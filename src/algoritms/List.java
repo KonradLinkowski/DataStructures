@@ -12,4 +12,6 @@ public interface List <T> {
 	void insert(T object, int index) throws IndexOutOfBoundsException;
 	
 	T remove(int index) throws IndexOutOfBoundsException;
+	
+	void clear();
 }

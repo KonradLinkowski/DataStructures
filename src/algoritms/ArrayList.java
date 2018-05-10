@@ -81,4 +81,11 @@ public class ArrayList<T> implements List<T> {
 			elements = array;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public void clear() {
+		elements = (T[]) new Object[8];
+		count = 0;
+	}
 }

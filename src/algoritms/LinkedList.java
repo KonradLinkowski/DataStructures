@@ -134,4 +134,11 @@ public class LinkedList<T> implements List<T> {
 		}
 		return temp;
 	}
+
+	@Override
+	public void clear() {
+		head = null;
+		tail = null;
+		count = 0;
+	}
 }
