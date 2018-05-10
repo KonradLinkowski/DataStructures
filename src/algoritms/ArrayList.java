@@ -1,6 +1,8 @@
 package algoritms;
 
-public class ArrayList<T> implements List<T> {
+import java.util.NoSuchElementException;
+
+public class ArrayList<T> implements List<T>, Stack<T> {
 
 	private int count = 0;
 	private T[] elements;
@@ -87,5 +89,23 @@ public class ArrayList<T> implements List<T> {
 	public void clear() {
 		elements = (T[]) new Object[8];
 		count = 0;
+	}
+
+	@Override
+	public T pop() throws NoSuchElementException {
+		T value = elements[count - 1];
+		count--;
+		tryToResize();
+		return value;
+	}
+
+	@Override
+	public T peek() throws NoSuchElementException {
+		return elements[count - 1];
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return count == 0;
 	}
 }
