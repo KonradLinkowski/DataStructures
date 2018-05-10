@@ -1,6 +1,6 @@
 package algoritms;
 
-public class LinkedList<T> implements List<T> {
+public class LinkedList<T> implements List<T>, Stack<T> {
 	private class Element<U> {
 		private U value;
 		private Element<U> next;
@@ -140,5 +140,23 @@ public class LinkedList<T> implements List<T> {
 		head = null;
 		tail = null;
 		count = 0;
+	}
+
+	@Override
+	public T pop() {
+		T value = tail.getValue();
+		tail = tail.getPrev();
+		count--;
+		return value;
+	}
+
+	@Override
+	public T peek() {
+		return tail.getValue();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return count == 0;
 	}
 }
