@@ -10,12 +10,16 @@ public class Number implements Cloneable {
 	}
 	
 	public Number(String number) {
-		Number temp = stringToFraction(number);
-		temp.normalize();
+		Number temp = stringToFraction(number).normalize();
 		this.numerator = temp.numerator;
 		this.denominator = temp.denominator;
 	}
 	
+	public Number(Number number) {
+		Number temp = number.normalize();
+		this.numerator = temp.numerator;
+		this.denominator = temp.denominator;
+	}
 	
 	public Number(long numerator, long denominator) {
 		long gcd = gcd(numerator, denominator);
@@ -29,8 +33,7 @@ public class Number implements Cloneable {
 			this.numerator * lcm / this.denominator + num.numerator * lcm / num.denominator,
 			lcm(this.denominator, num.denominator)
 		);
-		result.normalize();
-		return result;
+		return result.normalize();
 	}
 	
 	public Number subtract(Number num) {
@@ -39,34 +42,32 @@ public class Number implements Cloneable {
 			this.numerator * lcm / this.denominator - num.numerator * lcm / num.denominator,
 			lcm(this.denominator, num.denominator)
 		);
-		result.normalize();
-		return result;
+		return result.normalize();
 	}
 	
 	public Number divide(Number num) {
 		Number result = new Number(this.numerator * num.denominator, num.denominator * this.numerator);
-		result.normalize();
-		return result;
+		return result.normalize();
 	}
 	
 	public Number multiply(Number num) {
 		Number result = new Number(this.numerator * num.numerator, this.denominator * num.denominator);
-		result.normalize();
-		return result;
+		return result.normalize();
 	}
 	
 	public Number multiply(long num) {
 		Number result = new Number(this.numerator * num, this.denominator);
-		result.normalize();
-		return result;
+		return result.normalize();
 	}
 	
-	private void normalize() {
+	private Number normalize() {
 		long gcd = gcd(this.numerator, this.denominator);
-		this.numerator /= gcd;
-		this.denominator /= gcd;
+		return new Number(this.numerator /= gcd, this.denominator /= gcd);
 	}
 	
+	public Number inverse() {
+		return new Number(this.denominator, this.numerator);
+	}
 	
 	public static Number stringToFraction(String number) {
 		String[] parts = number.split("/");
@@ -94,11 +95,9 @@ public class Number implements Cloneable {
 		return this.numerator;
 	}
 	
-	
 	public long getDenominator() {
 		return this.denominator;
 	}
-	
 
 	public Double toFloat() {
 		return (double) (this.numerator / this.denominator);
@@ -106,6 +105,15 @@ public class Number implements Cloneable {
 	
 	public Double toDouble() {
 		return (double) (this.numerator / this.denominator);
+	}
+	
+	public boolean equals(long number) {
+		return this.numerator == number && this.denominator == 1;
+	}
+	
+	@Override
+	public boolean equals(Object number) {
+		return this.numerator == ((Number)number).numerator && this.denominator == ((Number)number).denominator;
 	}
 	
 	@Override
