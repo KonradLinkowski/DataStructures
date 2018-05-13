@@ -22,28 +22,36 @@ public class Number implements Cloneable {
 		this.denominator = denominator / gcd;
 	}
 	
-	public static Number sum(Number a, Number b) {
-		Number num = new Number(a.numerator + b.numerator, lcm(a.denominator, b.denominator));
-		num.normalize();
-		return num;
+	public Number add(Number num) {
+		Long lcm = lcm(this.denominator, num.denominator);
+		Number result = new Number(
+			this.numerator * lcm / this.denominator + num.numerator * lcm / num.denominator,
+			lcm(this.denominator, num.denominator)
+		);
+		result.normalize();
+		return result;
 	}
 	
-	public static Number subtract(Number a, Number b) {
-		Number num = new Number(a.numerator - b.numerator, lcm(a.denominator, b.denominator));
-		num.normalize();
-		return num;
+	public Number subtract(Number num) {
+		Long lcm = lcm(this.denominator, num.denominator);
+		Number result = new Number(
+			this.numerator * lcm / this.denominator - num.numerator * lcm / num.denominator,
+			lcm(this.denominator, num.denominator)
+		);
+		result.normalize();
+		return result;
 	}
 	
-	public static Number divide(Number a, Number b) {
-		Number num = new Number(a.numerator * b.denominator, a.denominator * b.numerator);
-		num.normalize();
-		return num;
+	public Number divide(Number num) {
+		Number result = new Number(this.numerator * num.denominator, num.denominator * this.numerator);
+		result.normalize();
+		return result;
 	}
 	
-	public static Number multiply(Number a, Number b) {
-		Number num = new Number(a.numerator * b.numerator, a.denominator * b.denominator);
-		num.normalize();
-		return num;
+	public Number multiply(Number num) {
+		Number result = new Number(this.numerator * num.numerator, this.denominator * num.denominator);
+		result.normalize();
+		return result;
 	}
 	
 	private void normalize() {
