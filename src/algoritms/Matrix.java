@@ -49,18 +49,19 @@ public class Matrix {
 		}
 	}
 	
-	public static Matrix multiply(Matrix a, Matrix b) {
-		if (a.columns != b.rows) {
-			throw new IllegalArgumentException("Columns of matrix a must by equal to rows of matrix b.");
+	public Matrix multiply(Matrix mat) {
+		if (this.columns != mat.rows) {
+			throw new IllegalArgumentException(
+					"Columns of matrix have to be equal to rows of the given matrix.");
 		}
-		Matrix result = new Matrix(a.rows, b.columns);
+		Matrix result = new Matrix(this.rows, mat.columns);
 		Number temp;
-		int depth = a.columns;
+		int depth = this.columns;
 		for (int i = 0; i < result.rows; i++) {
 			for (int j = 0; j < result.columns; j++) {
 				temp = new Number(0);
 				for (int k = 0; k < depth; k++) {
-					temp = Number.sum(temp, Number.multiply(a.values[i][k], b.values[k][j])); 
+					temp = temp.add(this.get(i, k).multiply(mat.get(k, j)));
 				}
 				result.values[i][j] = temp;
 			}
@@ -73,6 +74,32 @@ public class Matrix {
 		for (int i = 0; i < this.rows; i++) {
 			for (int j = 0; j < this.columns; j++) {
 				result.set(j, i, this.get(i, j));
+			}
+		}
+		return result;
+	}
+	
+	public Matrix add(Matrix a, Matrix b) {
+		if (a.columns != b.columns && a.rows != b.rows) {
+			throw new IllegalArgumentException("Matrices size have to be equal..");
+		}
+		Matrix result = new Matrix(a.rows, a.columns);
+		for (int i = 0; i < a.rows; i++) {
+			for (int j = 0; j < a.columns; j++) {
+				result.set(i, j, a.get(i, j).add(b.get(i, j)));
+			}
+		}
+		return result;
+	}
+	
+	public Matrix subtract(Matrix a, Matrix b) {
+		if (a.columns != b.columns && a.rows != b.rows) {
+			throw new IllegalArgumentException("Matrices size have to be equal..");
+		}
+		Matrix result = new Matrix(a.rows, a.columns);
+		for (int i = 0; i < a.rows; i++) {
+			for (int j = 0; j < a.columns; j++) {
+				result.set(i, j, a.get(i, j).subtract(b.get(i, j)));
 			}
 		}
 		return result;
