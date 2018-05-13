@@ -49,6 +49,18 @@ public class Matrix {
 		}
 	}
 	
+	public Matrix(int rows, int columns, long ...values) {
+		if (columns * rows != values.length) {
+			throw new IllegalArgumentException("Length of values have to be equal to columns * rows");
+		}
+		this.columns = columns;
+		this.rows = rows;
+		this.values = new Number[this.rows][this.columns];
+		for (int i = 0; i < values.length; i++) {
+			set(i / columns, i % columns, new Number(values[i]));
+		}
+	}
+	
 	public Matrix multiply(Matrix mat) {
 		if (this.columns != mat.rows) {
 			throw new IllegalArgumentException(
@@ -113,6 +125,45 @@ public class Matrix {
 			}
 		}
 		return result;
+	}
+	
+	public Number determinant() {
+		if (this.rows != this.columns) {
+			throw new IllegalArgumentException("Number of rows and columns have to be equal.");
+		}
+//		System.out.println(this.rows +  " " + this.columns);
+		if (this.rows == 1) {
+			return this.get(0, 0);
+		}
+		Number det = new Number(0);
+		for (int i = 0; i < this.rows; i++) {
+			det = det.add(
+				get(i, 0).multiply(
+					subMatrix(i, 0).determinant().multiply(i % 2 == 0 ? 1: -1)
+				)
+			);
+		}
+		return det;
+	}
+	
+	public Matrix subMatrix(int row, int column) {
+		if (row >= this.rows || column >= this.columns) {
+			throw new IllegalArgumentException("Too big arguments.");
+		}
+		if (rows == 1 || columns == 1) {
+			throw new IllegalArgumentException("Too small matrix.");
+		}
+		Matrix mat = new Matrix(this.rows - 1, this.columns - 1);
+		for (int i = 0, mati = 0; i < this.rows; i++) {
+			if (i == row) continue;
+			for (int j = 0, matj = 0; j < this.columns; j++) {
+				if (j == column) continue;
+				mat.set(mati, matj, this.get(i, j));
+				matj++;
+			}
+			mati++;
+		}
+		return mat;
 	}
 	
 	public Number get(int row, int column) {
