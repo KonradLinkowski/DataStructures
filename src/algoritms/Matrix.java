@@ -69,6 +69,16 @@ public class Matrix {
 		return result;
 	}
 	
+	public Matrix multiply(Number num) {
+		Matrix result = new Matrix(this.rows, this.columns);
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.columns; j++) {
+				result.set(i, j, this.get(i, j).multiply(num));
+			}
+		}
+		return result;
+	}
+	
 	public Matrix transpose() {
 		Matrix result = new Matrix(this.rows, this.columns);
 		for (int i = 0; i < this.rows; i++) {
@@ -79,27 +89,27 @@ public class Matrix {
 		return result;
 	}
 	
-	public Matrix add(Matrix a, Matrix b) {
-		if (a.columns != b.columns && a.rows != b.rows) {
+	public Matrix add(Matrix mat) {
+		if (this.columns != mat.columns && this.rows != mat.rows) {
 			throw new IllegalArgumentException("Matrices size have to be equal..");
 		}
-		Matrix result = new Matrix(a.rows, a.columns);
-		for (int i = 0; i < a.rows; i++) {
-			for (int j = 0; j < a.columns; j++) {
-				result.set(i, j, a.get(i, j).add(b.get(i, j)));
+		Matrix result = new Matrix(this.rows, this.columns);
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.columns; j++) {
+				result.set(i, j, this.get(i, j).add(mat.get(i, j)));
 			}
 		}
 		return result;
 	}
 	
-	public Matrix subtract(Matrix a, Matrix b) {
-		if (a.columns != b.columns && a.rows != b.rows) {
+	public Matrix subtract(Matrix mat) {
+		if (this.columns != mat.columns && this.rows != mat.rows) {
 			throw new IllegalArgumentException("Matrices size have to be equal..");
 		}
-		Matrix result = new Matrix(a.rows, a.columns);
-		for (int i = 0; i < a.rows; i++) {
-			for (int j = 0; j < a.columns; j++) {
-				result.set(i, j, a.get(i, j).subtract(b.get(i, j)));
+		Matrix result = new Matrix(this.rows, this.columns);
+		for (int i = 0; i < this.rows; i++) {
+			for (int j = 0; j < this.columns; j++) {
+				result.set(i, j, this.get(i, j).subtract(mat.get(i, j)));
 			}
 		}
 		return result;
