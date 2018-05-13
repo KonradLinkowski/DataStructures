@@ -16,6 +16,7 @@ public class Number implements Cloneable {
 		this.denominator = temp.denominator;
 	}
 	
+	
 	public Number(long numerator, long denominator) {
 		long gcd = gcd(numerator, denominator);
 		this.numerator = numerator / gcd;
@@ -50,6 +51,12 @@ public class Number implements Cloneable {
 	
 	public Number multiply(Number num) {
 		Number result = new Number(this.numerator * num.numerator, this.denominator * num.denominator);
+		result.normalize();
+		return result;
+	}
+	
+	public Number multiply(long num) {
+		Number result = new Number(this.numerator * num, this.denominator);
 		result.normalize();
 		return result;
 	}
