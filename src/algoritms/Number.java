@@ -1,6 +1,6 @@
 package algoritms;
 
-public class Number {
+public class Number implements Cloneable {
 	private long numerator;
 	private long denominator;
 	
@@ -9,8 +9,8 @@ public class Number {
 		this.denominator = 1;
 	}
 	
-	public Number(double number) {
-		Number temp = floatToFraction(number);
+	public Number(String number) {
+		Number temp = stringToFraction(number);
 		temp.normalize();
 		this.numerator = temp.numerator;
 		this.denominator = temp.denominator;
@@ -52,13 +52,13 @@ public class Number {
 		this.denominator /= gcd;
 	}
 	
-	public static Number floatToFraction(double number) {
-		long denominator = 1;
-		while (number != (long)number) {
-			number *= 10;
-			denominator *= 10;
-		}
-		return new Number((long)number, denominator);
+	
+	public static Number stringToFraction(String number) {
+		String[] parts = number.split("/");
+		return new Number(
+				Long.parseLong(parts[0]),
+				parts.length == 2 ? Long.parseLong(parts[1]) : 1
+			);
 	}
 	
 	public static long lcm(long a, long b) {
@@ -79,20 +79,12 @@ public class Number {
 		return this.numerator;
 	}
 	
-	public Number setNumerator(long number) {
-		this.numerator = number;
-		return this;
-	}
 	
 	public long getDenominator() {
 		return this.denominator;
 	}
 	
-	public Number setDenominator(long number) {
-		this.denominator = number;
-		return this;
-	}
-	
+
 	public Double toFloat() {
 		return (double) (this.numerator / this.denominator);
 	}
@@ -102,7 +94,15 @@ public class Number {
 	}
 	
 	@Override
+	public Number clone() {
+		return new Number(this.numerator, this.denominator);
+	}
+	
+	@Override
 	public String toString() {
+		if (this.denominator == 1) {
+			return Long.toString(this.numerator);
+		}
 		return this.numerator + " / " + this.denominator;
 	}
 }
