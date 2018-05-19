@@ -62,7 +62,12 @@ public class Number implements Cloneable {
 	
 	private Number normalize() {
 		long gcd = gcd(this.numerator, this.denominator);
-		return new Number(this.numerator /= gcd, this.denominator /= gcd);
+		Number temp = new Number(this.numerator /= gcd, this.denominator /= gcd);
+		if (temp.numerator < 0) {
+			temp.numerator *= -1;
+			temp.denominator *= -1;
+		}
+		return temp;
 	}
 	
 	public Number inverse() {
